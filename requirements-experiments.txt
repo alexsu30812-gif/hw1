@@ -1,0 +1,8 @@
+-r requirements.txt
+# Required only to rerun the TinyMU comparison and generate the PDF report.
+torchaudio==2.8.0
+torchvision==0.23.0
+timm==0.4.12
+einops==0.8.1
+PyYAML==6.0.3
+reportlab==4.4.4

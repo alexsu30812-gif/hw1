@@ -1,0 +1,14 @@
+.venv/
+__pycache__/
+*.pyc
+.DS_Store
+data/
+downloads/
+cache/
+.inference_cache/
+artifacts/*.npz
+artifacts/records*.json
+submission/
+github_publish/
+figures/
+*.zip

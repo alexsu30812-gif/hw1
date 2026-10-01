@@ -1,0 +1,15 @@
+{
+  "repository": "https://github.com/xiquan-li/TinyMU",
+  "commit": "385133d3df4460b749d3d774c93edd4016bd4bac",
+  "files": [
+    "README.md",
+    "src/models/matpac/model.py",
+    "src/models/projector.py",
+    "src/models/encoder.py",
+    "src/models/decoder.py",
+    "src/models/m2t.py",
+    "src/data_handling/dataset_utils.py"
+  ],
+  "license_files_found": [],
+  "note": "Official source files preserved verbatim. Upstream tree contains no standalone license file if license_files_found is empty. See individual source comments and upstream README for acknowledgements."
+}
