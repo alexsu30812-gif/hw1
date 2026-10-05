@@ -167,7 +167,7 @@ def build(results_dir, data_audit, profile):
             'commands': ['pip install -r requirements.txt',
                          'python src/infer.py --data-root /path/to/data --model-dir artifacts/models --output r14942154.json --device cpu'],
             'artifacts': ['A_selected.joblib; B_selected.joblib', 'Pinned feature extractors and label order',
-                          'README and dependency files', 'Raw validation scores, ALM logs and data audit'],
+                          'README and dependency files', 'Prediction JSON and submission-format validator'],
             'versions': versions,
             'limitations': [
                 'Small, balanced datasets and one fixed split limit generalization claims; test accuracy is unknown.',
