@@ -3,6 +3,8 @@ __pycache__/
 *.pyc
 .DS_Store
 data/
+dataset_A/
+dataset_B/
 downloads/
 cache/
 .inference_cache/

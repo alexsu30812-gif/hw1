@@ -18,6 +18,7 @@ from threadpoolctl import threadpool_limits
 from classical_features import extract_classical, FEATURE_VERSION as CLASSICAL_VERSION
 from model_utils import load_bundle, predict_bundle, rank_labels, write_json
 from mert_features import MertExtractor, FEATURE_VERSION as MERT_VERSION
+from validate_predictions import validate_predictions, validate_test_ids
 
 MERT_ID = 'm-a-p/MERT-v1-95M'
 MERT_REVISION = '12af15fef9d0ac838c3f475bfbbf26d2060dd4f5'
@@ -59,6 +60,12 @@ def main():
     p.add_argument('--device', choices=['cpu', 'mps', 'cuda'], default='cpu')
     p.add_argument('--no-feature-cache', action='store_true')
     args = p.parse_args()
+    records = get_test_records(args.data_root)
+    expected_ids = {
+        f'dataset_{d}': [r['sample_id'] for r in records if r['dataset'] == d]
+        for d in ('A', 'B')
+    }
+    validate_test_ids(expected_ids)
     bundles = {d: load_bundle(args.model_dir / f'{d}_selected.joblib') for d in ('A','B')}
     for d, bundle in bundles.items():
         if bundle['dataset'] != d:
@@ -67,7 +74,6 @@ def main():
             if bundle['feature_route'] in (route, 'concat'):
                 if bundle['feature_versions'][route] != version:
                     raise ValueError(f'Checkpoint/extractor version mismatch for {route}')
-    records = get_test_records(args.data_root)
     args.cache_dir.mkdir(parents=True, exist_ok=True)
     needs_mert = any(b['feature_route'] in ('mert','concat') for b in bundles.values())
     mert = None
@@ -105,8 +111,7 @@ def main():
             predictions[f"dataset_{record['dataset']}"][record['sample_id']] = top3
             if index % 20 == 0 or index == len(records):
                 print(f'Inference {index}/{len(records)}', flush=True)
-    if sum(map(len, predictions.values())) != len(records):
-        raise RuntimeError('Prediction coverage mismatch')
+    validate_predictions(predictions, expected_ids)
     write_json(args.output, predictions)
     print(f'Saved {args.output}', flush=True)
 
